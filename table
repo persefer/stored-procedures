@@ -1,0 +1,18 @@
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[F_FINANSAL_KPI](
+    [ID] [int] IDENTITY(1,1) NOT NULL,
+	[KPIKodu] [varchar](4) NOT NULL,
+	[KPIAciklamasi] [varchar](50) NOT NULL,
+	[Value] [float] NULL,
+	[YIL] [int] NOT NULL,
+	[AY] [int] NOT NULL,
+	[WH_INSERTID] [int] NULL,
+	[WH_INSERTDATE] [datetime] NULL,
+	[WH_UPDATEDATE] [datetime] NULL
+    [ACTIVE] [smallint] NULL,
+) ON [PRIMARY]
+GO
+
