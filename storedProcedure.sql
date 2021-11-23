@@ -34,7 +34,13 @@ BEGIN
 
 		begin try
 			begin transaction
-			
+
+	select @p_int=START_REQUESTED_FLAG
+	from Z_SP_STATUS
+	where 
+	SP_NAME='sp_Load_logo';
+	
+	
 				update
 				Z_SP_STATUS WITH(NOWAIT)
 				set
@@ -48,6 +54,42 @@ BEGIN
 				START_REQUESTED_FLAG=0
 				or START_REQUESTED_FLAG is null
 				);
+
+
+
+
+		set @p_log_message = N'VA_SUBE_NO_MASRAF_YERI tablosu dolduruluyor';
+		exec dbo.[sp_Log] @Log_SP=@SP_Name, @Log_Message=@p_log_message, @Log_Severity=0;
+
+			MERGE INTO [dbo].[VA_SUBE_NO_MASRAF_YERI] AS target
+			USING 
+			(
+				SELECT 
+					[id]
+					,[subeno]
+					,[masrafkodu]
+				FROM [10.0.0.234].[BantasForms].[dbo].[subeno_masrafyeri] with (nolock)
+			) AS source 
+			ON 	(target.id = source.id)
+			when not matched then 
+			insert
+			(
+				[id]
+				,[subeno]
+				,[masrafkodu]
+				,WH_INSERTID
+				,WH_INSERTDATE
+			) 
+			VALUES
+			(
+				source.[id]
+				,source.[subeno]
+				,source.[masrafkodu]
+				,@p_Etl_Id
+				,getdate()
+			);
+			
+
 
 				set @p_rowcount=@@ROWCOUNT;
 
@@ -81,3 +123,4 @@ BEGIN
 			
 		end catch
 	end;
+END
