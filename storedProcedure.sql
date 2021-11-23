@@ -57,6 +57,8 @@ BEGIN
 
 
 
+DELETE FROM [dbo].[F_OPERASYON] WHERE Yıl=YEAR(GETDATE()) AND Ay=MONTH(GETDATE());
+
 
 		set @p_log_message = N'VA_SUBE_NO_MASRAF_YERI tablosu dolduruluyor';
 		exec dbo.[sp_Log] @Log_SP=@SP_Name, @Log_Message=@p_log_message, @Log_Severity=0;
