@@ -6,12 +6,12 @@ GO
 CREATE VIEW [dbo].[YoneticiRaporları_GelirTablosu]
 AS
 SELECT DISTINCT 
-	YIL, 
-	FIRST_VALUE(AY) over (partition by KPIKodu, YIL order by AY desc) AY,
-	KPIKodu,
-	KPIAciklamasi, 
-	FIRST_VALUE(Value) over (partition by KPIKodu, YIL order by AY desc) VALUE
+	 YIL                                                                  AS   YEAR 
+	,FIRST_VALUE(AY) over (partition by KPIKodu, YIL order by AY desc)    AS   MONTH
+	,KPIKodu                                                              AS   KPI_CODE
+	,FIRST_VALUE(Value) over (partition by KPIKodu, YIL order by AY desc) AS   VALUE
+	,ISNULL(NULLIF([BUDGET_VALUE],''), '0')                               AS   BUDGET	
 FROM
-	Logo.dbo.F_FINANSAL_KPI
+	Logo.dbo.F_FINANCIAL_KPI
   
 GO
